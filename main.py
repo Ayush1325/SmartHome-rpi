@@ -4,9 +4,9 @@ from data import Data
 serialport = serial.Serial("/dev/ttyACM0", 9600)
 
 dataObj = Data()
-temp = {'action': 4}
-serialport.write(dataObj.msgToSend(temp))
 
 while True:
+    temp = {'action': 4}
+    serialport.write(dataObj.msgToSend(temp))
     command = serialport.readline()
-    print(dataObj.msgRecieved(command))
+    dataObj.isChanged(dataObj.msgRecieved(command))
