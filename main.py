@@ -1,13 +1,12 @@
 import serial
-import json
+from data import Data
 
 serialport = serial.Serial("/dev/ttyACM0", 9600)
 
+dataObj = Data()
 temp = {'action': 4}
-jsonObj = json.dumps(temp)
-serialport.write(jsonObj.encode('utf-8'))
+serialport.write(dataObj.msgToSend(temp))
 
 while True:
     command = serialport.readline()
-    commandDecoded = json.loads(command)
-    print(commandDecoded)
+    print(dataObj.msgRecieved(command))
