@@ -4,7 +4,16 @@ from actions import Actions
 from data import Data
 
 
-class SerialHelper:
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class _SerialHelper:
     def __init__(self):
         self.serialport = serial.Serial("/dev/ttyACM0", 9600)
         self.currentData = Data()
@@ -33,3 +42,7 @@ class SerialHelper:
                 self.currentData.rain = recivedData['rain']
             if self.currentData.cloud != recivedData['cloud']:
                 self.currentData.cloud = recivedData['cloud']
+
+
+class SerialHelper(_SerialHelper, metaclass=Singleton):
+    pass

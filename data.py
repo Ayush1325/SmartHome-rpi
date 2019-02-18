@@ -1,16 +1,7 @@
 from manage_firbebase import ManageFirebase
 
 
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-
-class _Data:
+class Data:
 
     _temp: float
     _humidity: int
@@ -67,7 +58,3 @@ class _Data:
     def cloud(self, value):
         self._firebase.add_sensor_data({u'cloud': value})
         self._cloud = value
-
-
-class Data(_Data, metaclass=Singleton):
-    pass
