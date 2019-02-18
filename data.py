@@ -1,7 +1,16 @@
 from manage_firbebase import ManageFirebase
 
 
-class Data:
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class _Data:
 
     _temp: float
     _humidity: int
@@ -29,7 +38,7 @@ class Data:
 
     @temp.setter
     def temp(self, value):
-        self._firebase.addSensorData({u'temp': value})
+        self._firebase.add_sensor_data({u'temp': value})
         self._temp = value
 
     @property
@@ -38,7 +47,7 @@ class Data:
 
     @humidity.setter
     def humidity(self, value):
-        self._firebase.addSensorData({u'humidity': value})
+        self._firebase.add_sensor_data({u'humidity': value})
         self._humidity = value
 
     @property
@@ -47,7 +56,7 @@ class Data:
 
     @rain.setter
     def rain(self, value):
-        self._firebase.addSensorData({u'rain': value})
+        self._firebase.add_sensor_data({u'rain': value})
         self._rain = value
 
     @property
@@ -56,5 +65,9 @@ class Data:
 
     @cloud.setter
     def cloud(self, value):
-        self._firebase.addSensorData({u'cloud': value})
+        self._firebase.add_sensor_data({u'cloud': value})
         self._cloud = value
+
+
+class Data(_Data, metaclass=Singleton):
+    pass

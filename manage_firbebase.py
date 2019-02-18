@@ -9,9 +9,9 @@ class ManageFirebase:
         firebase_admin.initialize_app(cred)
         self.db = firestore.client()
 
-    def addSensorData(self, data):
+    def add_sensor_data(self, data):
         docRef = self.db.collection(u'home').document(u'weather')
         docRef.update(data)
 
-    def initListner(self, data):
-        docRef = self.db.collection(u'home').document(u'devices').snapshots()
+    def init_listener(self, data):
+        docRef = self.db.collection(u'home').document(u'devices')
