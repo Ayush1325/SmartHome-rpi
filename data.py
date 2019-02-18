@@ -1,42 +1,60 @@
-import json
-from last_data import lastData
-from actions import Actions
 from manage_firbebase import ManageFirebase
 
 
 class Data:
+
+    _temp: float
+    _humidity: int
+    _rain: bool
+    _cloud: bool
+    _smoke: bool
+    _fire: bool
+    _fan: bool
+    _led: bool
+
     def __init__(self):
-        self.pastData = lastData()
-        self.pastData.init(0.0, 0, False, False)
-        self.firebaseObj = ManageFirebase()
+        self._firebase = ManageFirebase()
+        self.temp = 0.0
+        self.humidity = 0
+        self.rain = False
+        self.cloud = False
+        self.smoke = False
+        self.fire = False
+        self.fan = False
+        self.led = False
 
-    def msgToSend(self, msg):
-        return json.dumps(msg).encode('utf-8')
+    @property
+    def temp(self):
+        return self._temp
 
-    def msgRecieved(self, msg):
-        return json.loads(msg)
+    @temp.setter
+    def temp(self, value):
+        self._firebase.addSensorData({u'temp': value})
+        self._temp = value
 
-    def isChanged(self, data):
-        if(data['action'] == Actions.SENSOR_INFO.value):
-            newData = lastData()
-            newData.fromJson(data)
-            if(self.pastData.temp != newData.temp):
-                print('Temp')
-                print(newData.temp)
-                self.firebaseObj.addSensorData({u'temp': newData.temp})
-                self.pastData.temp = newData.temp
-            if(self.pastData.humidity != newData.humidity):
-                print('Humidity')
-                print(newData.humidity)
-                self.firebaseObj.addSensorData({u'humidity': newData.humidity})
-                self.pastData.humidity = newData.humidity
-            if(self.pastData.rain != newData.rain):
-                print('Rain')
-                print(newData.rain)
-                self.firebaseObj.addSensorData({u'rain': newData.rain})
-                self.pastData.rain = newData.rain
-            if(self.pastData.cloud != newData.cloud):
-                print('Cloud')
-                print(newData.cloud)
-                self.firebaseObj.addSensorData({u'cloud': newData.cloud})
-                self.pastData.cloud = newData.cloud
+    @property
+    def humidity(self):
+        return self._humidity
+
+    @humidity.setter
+    def humidity(self, value):
+        self._firebase.addSensorData({u'humidity': value})
+        self._humidity = value
+
+    @property
+    def rain(self):
+        return self._rain
+
+    @rain.setter
+    def rain(self, value):
+        self._firebase.addSensorData({u'rain': value})
+        self._rain = value
+
+    @property
+    def cloud(self):
+        return self._cloud
+
+    @cloud.setter
+    def cloud(self, value):
+        self._firebase.addSensorData({u'cloud': value})
+        self._cloud = value

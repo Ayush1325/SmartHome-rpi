@@ -1,12 +1,10 @@
-import serial
-from data import Data
+from serial_helper import SerialHelper
+from actions import Actions
 
-serialport = serial.Serial("/dev/ttyACM0", 9600)
 
-dataObj = Data()
+serialObj = SerialHelper()
 
 while True:
-    temp = {'action': 4}
-    serialport.write(dataObj.msgToSend(temp))
-    command = serialport.readline()
-    dataObj.isChanged(dataObj.msgRecieved(command))
+    temp = {'action': Actions.SENSOR_INFO.value}
+    serialObj.send_data(temp)
+    serialObj.read_data()

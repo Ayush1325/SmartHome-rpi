@@ -10,5 +10,8 @@ class ManageFirebase:
         self.db = firestore.client()
 
     def addSensorData(self, data):
-        docRef = self.db.collection(u'home').document(u'sensors')
+        docRef = self.db.collection(u'home').document(u'weather')
         docRef.update(data)
+
+    def initListner(self, data):
+        docRef = self.db.collection(u'home').document(u'devices').snapshots()

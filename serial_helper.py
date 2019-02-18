@@ -1,0 +1,35 @@
+import serial
+import json
+from actions import Actions
+from data import Data
+
+
+class SerialHelper:
+    def __init__(self):
+        self.serialport = serial.Serial("/dev/ttyACM0", 9600)
+        self.currentData = Data()
+
+    def send_data(self, data):
+        self.serialport.write(self.msg_to_send(data))
+
+    def read_data(self):
+        command = self.serialport.readline()
+        msg = self.msg_recieved(command)
+        self.process_data(msg)
+
+    def msg_to_send(self, msg):
+        return json.dumps(msg).encode('utf-8')
+
+    def msg_recieved(self, msg):
+        return json.loads(msg)
+
+    def process_data(self, recivedData):
+        if recivedData['action'] == Actions.SENSOR_INFO.value:
+            if self.currentData.temp != recivedData['temp']:
+                self.currentData.temp = recivedData['temp']
+            if self.currentData.humidity != recivedData['hmd']:
+                self.currentData.humidity = recivedData['hmd']
+            if self.currentData.rain != recivedData['rain']:
+                self.currentData.rain = recivedData['rain']
+            if self.currentData.cloud != recivedData['cloud']:
+                self.currentData.cloud = recivedData['cloud']
