@@ -26,7 +26,7 @@ class Receiver:
             temp = {u'action': Actions.LED.value, u'value': data['light']}
             self.send_data(temp)
             self.current_data.led = data['light']
-        if data['fan'] != self.current_data.led:
+        if data['fan'] != self.current_data.fan:
             temp = {u'action': Actions.FAN.value, u'value': data['fan']}
             self.send_data(temp)
-            self.current_data.led = data['fan']
+            self.current_data.fan = data['fan']
