@@ -1,6 +1,6 @@
 class DeviceData:
-    _fan: int
-    _led: int
+    fan: int
+    led: int
 
     def __init__(self):
         self.fan = 0

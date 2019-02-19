@@ -10,3 +10,4 @@ class Actions(IntEnum):
     LED = 5
     FAN = 6
     BUZZ = 7
+    RESET = 8
