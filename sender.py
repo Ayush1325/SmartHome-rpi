@@ -35,6 +35,10 @@ class Sender:
         doc_ref = self.db.collection(u'home').document(u'sensors')
         doc_ref.update(data)
 
+    def add_monitor_data(self, data):
+        doc_ref = self.db.collection(u'home').document(u'monitor')
+        doc_ref.update(data)
+
     def msg_received(self, msg):
         return json.loads(msg)
 
@@ -80,3 +84,5 @@ class Sender:
             self.add_sensor_data({u'earthQuake': False, u'fire': False, u'smoke': False, u'flood': False})
             self.send_data({'action': Actions.BUZZ.value, 'value': 0})
             self.current_sensor_data.reset()
+        elif received_data['action'] == Actions.FLAME.value:
+            self.add_monitor_data({u'flame': received_data['state']})
