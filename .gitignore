@@ -1,3 +1,5 @@
 __pycache__/
-smarthome-ee796-firebase-adminsdk-e5uty-d2e5e8672e.json
 .idea/
+homeRPI.egg-info/
+dist/
+build/
