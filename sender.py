@@ -24,7 +24,7 @@ class Sender:
 
     def read_data(self):
         command = self.serial_port.readline()
-        msg = self.msg_received(command)
+        msg = self.msg_received(command.decode('utf-8'))
         self.process_data(msg)
 
     def add_weather_data(self, data):
