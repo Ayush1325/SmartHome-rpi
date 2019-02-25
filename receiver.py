@@ -24,7 +24,7 @@ class Receiver:
         for doc in doc_snapshot:
             self.process_data(doc.to_dict())
 
-    def shutdown(self, doc_snapshot, changes, read_time)
+    def shutdown(self, doc_snapshot, changes, read_time):
         self.db.collection(u'home').document(u'rpiControls').update({'powerOff': False})
         call("sudo shutdown -h now", shell=True)
 
