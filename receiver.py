@@ -1,6 +1,7 @@
 import json
 from device_data import DeviceData
 from actions import Actions
+from subprocess import call
 
 
 class Receiver:
@@ -10,6 +11,8 @@ class Receiver:
         self.current_data = DeviceData()
         doc_ref = self.db.collection(u'home').document(u'devices')
         self.doc_watch = doc_ref.on_snapshot(self.device_data)
+        doc_ref2 = self.db.collection(u'home').document(u'rpiControls')
+        self.doc_watch2 = doc_ref2.on_snapshot()
 
     def send_data(self, data):
         self.serial_port.write(self.msg_to_send(data))
@@ -20,6 +23,10 @@ class Receiver:
     def device_data(self, doc_snapshot, changes, read_time):
         for doc in doc_snapshot:
             self.process_data(doc.to_dict())
+
+    def shutdown(self, doc_snapshot, changes, read_time)
+        self.db.collection(u'home').document(u'rpiControls').update({'powerOff': False})
+        call("sudo shutdown -h now", shell=True)
 
     def process_data(self, data):
         if data['light'] != self.current_data.led:
