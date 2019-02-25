@@ -25,8 +25,11 @@ class Receiver:
             self.process_data(doc.to_dict())
 
     def shutdown(self, doc_snapshot, changes, read_time):
-        self.db.collection(u'home').document(u'rpiControls').update({'powerOff': False})
-        call("sudo shutdown -h now", shell=True)
+        for doc in doc_snapshot:
+            data = doc.to_dict()
+            if(data['powerOff']):
+                self.db.collection(u'home').document(u'rpiControls').update({'powerOff': False})
+                call("sudo shutdown -h now", shell=True)
 
     def process_data(self, data):
         if data['light'] != self.current_data.led:
