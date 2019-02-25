@@ -1,9 +1,4 @@
 class SensorData:
-    earth_quake: bool
-    smoke: bool
-    fire: bool
-    flood: bool
-
     def __init__(self):
         self.earth_quake = False
         self.smoke = False
