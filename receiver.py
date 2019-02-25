@@ -12,7 +12,7 @@ class Receiver:
         doc_ref = self.db.collection(u'home').document(u'devices')
         self.doc_watch = doc_ref.on_snapshot(self.device_data)
         doc_ref2 = self.db.collection(u'home').document(u'rpiControls')
-        self.doc_watch2 = doc_ref2.on_snapshot()
+        self.doc_watch2 = doc_ref2.on_snapshot(self.shutdown)
 
     def send_data(self, data):
         self.serial_port.write(self.msg_to_send(data))
