@@ -15,8 +15,11 @@ class Sender:
 
     def start_loop(self):
         while True:
-            self.send_data(self.nano, {u'action': nanoActions.SENSOR_INFO.value})
-            self.read_data()
+            try:
+                self.send_data(self.nano, {u'action': nanoActions.SENSOR_INFO.value})
+                self.read_data()
+            except:
+                continue
 
     def send_data(self, port, data):
         port.write(self.msg_to_send(data))
