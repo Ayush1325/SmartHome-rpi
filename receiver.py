@@ -1,7 +1,7 @@
 import json
 from device_data import DeviceData
-from actions import Actions
 from subprocess import call
+from uno_actions import unoActions
 
 
 class Receiver:
@@ -32,11 +32,15 @@ class Receiver:
                 call("sudo shutdown -h now", shell=True)
 
     def process_data(self, data):
-        if data['light'] != self.current_data.led:
-            temp = {u'action': Actions.LED.value, u'value': data['light']}
+        if data['light1'] != self.current_data.led1:
+            temp = {u'action': unoActions.LED1.value, u'value': data['light1']}
             self.send_data(temp)
-            self.current_data.led = data['light']
+            self.current_data.led1 = data['light1']
+        if data['light2'] != self.current_data.led2:
+            temp = {u'action': unoActions.LED2.value, u'value': data['light2']}
+            self.send_data(temp)
+            self.current_data.led2 = data['light2']
         if data['fan'] != self.current_data.fan:
-            temp = {u'action': Actions.FAN.value, u'value': data['fan']}
+            temp = {u'action': unoActions.FAN.value, u'value': data['fan']}
             self.send_data(temp)
             self.current_data.fan = data['fan']
