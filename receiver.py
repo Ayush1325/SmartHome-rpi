@@ -44,3 +44,7 @@ class Receiver:
             temp = {u'action': unoActions.FAN.value, u'value': data['fan']}
             self.send_data(temp)
             self.current_data.fan = data['fan']
+        if data['door'] != self.current_data.door:
+            temp = {u'action': unoActions.DOOR.value, u'state': data['door']}
+            self.send_data(temp)
+            self.current_data.fan = data['door']

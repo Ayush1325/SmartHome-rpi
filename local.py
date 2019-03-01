@@ -18,14 +18,14 @@ class Local:
         self.db = db
         self.password = ""
         factory = rpi_gpio.KeypadFactory()
-        # Try factory.create_4_by_3_keypad
-        # and factory.create_4_by_4_keypad for reasonable defaults
         self.keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
         self.keypad.registerKeyPressHandler(self.keyPressed)
 
     def keyPressed(self, key):
         if(key == "A"):
-            print(self.password)
+            if(self.checkPass()):
+                self.add_device_data({u'door': True})
+                self.send_data({u'actions': unoActions.DOOR.value, u'state': True})
             self.password = ""
         elif(key == "B"):
             call("sudo reboot -h now", shell=True)
@@ -42,6 +42,13 @@ class Local:
             sys.exit()
         else:
             self.password += key
+
+    def checkPass(self):
+        docRef = self.db.collection('home').document(u'rpiControls')
+        data = docRef.data()
+        if(data["pass"] == self.password):
+            return True
+        return False
 
     def send_data(self, data):
         self.uno.write(self.msg_to_send(data))
