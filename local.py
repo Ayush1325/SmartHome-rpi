@@ -44,8 +44,8 @@ class Local:
             self.password += key
 
     def checkPass(self):
-        docRef = self.db.collection('home').document(u'rpiControls').get()
-        data = docRef.data()
+        doc = self.db.collection('home').document(u'rpiControls').get()
+        data = doc.to_dict()
         if(data["pass"] == self.password):
             return True
         return False
