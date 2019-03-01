@@ -6,11 +6,12 @@ from nano_actions import nanoActions
 
 
 class Sender:
-    def __init__(self, uno, nano, db):
+    def __init__(self, uno, nano, db, data):
         self.uno = uno
         self.nano = nano
         self.current_weather_data = WeatherData()
         self.current_sensor_data = SensorData()
+        self.current_device_data = data
         self.db = db
 
     def start_loop(self):
@@ -42,6 +43,10 @@ class Sender:
 
     def add_monitor_data(self, data):
         doc_ref = self.db.collection(u'home').document(u'monitor')
+        doc_ref.update(data)
+
+    def add_device_data(self, data):
+        doc_ref = self.db.collection(u'home').document(u'devices')
         doc_ref.update(data)
 
     def msg_received(self, msg):
@@ -91,5 +96,32 @@ class Sender:
             self.add_sensor_data({u'earthQuake': False, u'fire': False, u'smoke': False, u'flood': False})
             self.send_data(self.uno, {'action': unoActions.BUZZ.value, 'state': False})
             self.current_sensor_data.reset()
+        elif received_data['action'] == nanoActions.LED1.value:
+            if self.current_device_data.led1 > 0:
+                self.send_data(self.uno, {u'action': unoActions.LED1.value, u'value': 0})
+                self.current_device_data.led1 = 0
+                self.add_device_data({u'light1': 0})
+            else:
+                self.send_data(self.uno, {u'action': unoActions.LED1.value, u'value': 255})
+                self.current_device_data.led1 = 255
+                self.add_device_data({u'light1': 255})
+        elif received_data['action'] == nanoActions.LED2.value:
+            if self.current_device_data.led2 > 0:
+                self.send_data(self.uno, {u'action': unoActions.LED2.value, u'value': 0})
+                self.current_device_data.led2 = 0
+                self.add_device_data({u'light2': 0})
+            else:
+                self.send_data(self.uno, {u'action': unoActions.LED2.value, u'value': 255})
+                self.current_device_data.led2 = 255
+                self.add_device_data({u'light2': 255})
+        elif received_data['action'] == nanoActions.FAN.value:
+            if self.current_device_data.fan > 0:
+                self.send_data(self.uno, {u'action': unoActions.FAN.value, u'value': 0})
+                self.current_device_data.fan = 0
+                self.add_device_data({u'fan': 0})
+            else:
+                self.send_data(self.uno, {u'action': unoActions.FAN.value, u'value': 255})
+                self.current_device_data.fan = 255
+                self.add_device_data({u'fan': 255})
         elif received_data['action'] == nanoActions.FLAME.value:
             self.add_monitor_data({u'flame': received_data['state']})

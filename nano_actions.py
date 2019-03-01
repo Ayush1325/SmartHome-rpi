@@ -8,3 +8,6 @@ class nanoActions(IntEnum):
     SENSOR_INFO = 4
     FLAME = 5
     RESET = 6
+    LED1 = 7
+    LED2 = 8
+    FAN = 9

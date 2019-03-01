@@ -5,10 +5,10 @@ from uno_actions import unoActions
 
 
 class Receiver:
-    def __init__(self, serial_port, db):
+    def __init__(self, serial_port, db, deviceData):
         self.serial_port = serial_port
         self.db = db
-        self.current_data = DeviceData()
+        self.current_data = deviceData
         doc_ref = self.db.collection(u'home').document(u'devices')
         self.doc_watch = doc_ref.on_snapshot(self.device_data)
         doc_ref2 = self.db.collection(u'home').document(u'rpiControls')
