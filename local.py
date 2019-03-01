@@ -7,10 +7,10 @@ from subprocess import call
 class Local:
     def __init__(self, uno, db):
         KEYPAD = [
-            [1, 2, 3, "A"],
-            [4, 5, 6, "B"],
-            [7, 8, 9, "C"],
-            ["*", 0, "#", "D"]
+            ["1", "2", "3", "A"],
+            ["4", "5", "6", "B"],
+            ["7", "8", "9", "C"],
+            ["*", "0", "#", "D"]
         ]
         ROW_PINS = [4, 17, 27, 22] # BCM numbering
         COL_PINS = [5, 6, 13, 19] # BCM numbering
