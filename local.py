@@ -28,8 +28,10 @@ class Local:
                 self.send_data({u'actions': unoActions.DOOR.value, u'state': True})
             self.password = ""
         elif(key == "B"):
+            self.keypad.cleanup()
             call("sudo reboot -h now", shell=True)
         elif(key == "C"):
+            self.keypad.cleanup()
             call("sudo shutdown -h now", shell=True)
         elif(key == "D"):
             self.keypad.cleanup()
